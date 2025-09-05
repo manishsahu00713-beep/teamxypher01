@@ -1,755 +1,228 @@
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
+/* Cyberpunk Neon Sikkim Explorer Style! */
 body {
-  font-family: 'Rajdhani', 'Orbitron', sans-serif;
-  background: #0a0a0a;
-  color: #00ffff;
-  overflow-x: hidden;
-  line-height: 1.4;
-}
-
-/* Animated Background Grid */
-.cyber-bg-grid {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: -1;
-  background: 
-    linear-gradient(rgba(0,255,255,0.1) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(0,255,255,0.1) 1px, transparent 1px),
-    radial-gradient(circle at 25% 25%, #001a33 0%, #000511 50%),
-    linear-gradient(135deg, #000a1a 0%, #001122 100%);
-  background-size: 50px 50px, 50px 50px, 100% 100%, 100% 100%;
-  animation: gridMove 20s linear infinite;
-}
-
-@keyframes gridMove {
-  0% { background-position: 0 0, 0 0, 0 0, 0 0; }
-  100% { background-position: 50px 50px, 50px 50px, 0 0, 0 0; }
-}
-
-.main-container {
-  position: relative;
-  z-index: 1;
+  font-family: 'Orbitron', 'Montserrat', Arial, sans-serif;
+  background: #0a0a1a;
+  color: #00ffee;
+  margin: 0;
   min-height: 100vh;
+  letter-spacing: 0.04em;
 }
 
-/* Top Header */
+/* Animated grid BG */
+body::before {
+  content: "";
+  position: fixed;
+  z-index: -1;
+  left: 0; top: 0; width: 100vw; height: 100vh;
+  background: 
+    repeating-linear-gradient(120deg, #00f2ff09 0 2px, transparent 2px 48px),
+    linear-gradient(140deg, #063354 0%, #0a192a 49%, #101a23 100%);
+  animation: cyberbg 12s linear infinite;
+}
+@keyframes cyberbg { 100% { background-position: 120px 40px, 0 0; } }
+
+.top-header, .main-nav {
+  background: rgba(0,13,33,0.86);
+  position: sticky;
+  top: 0; z-index: 2;
+  box-shadow: 0 3px 36px #10f8fd25;
+  border-bottom: 1.5px solid #00f8ff38;
+}
 .top-header {
   display: flex;
+  align-items: center;
   justify-content: space-between;
-  align-items: center;
-  padding: 1rem 2rem;
-  background: rgba(0, 10, 20, 0.9);
-  border-bottom: 2px solid #00ffff;
-  backdrop-filter: blur(10px);
+  padding: 0.8em 1.8em;
 }
-
-.logo-section {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-}
-
-.logo-icon {
-  font-size: 1.8rem;
-  color: #00ffff;
-  text-shadow: 0 0 15px #00ffff;
-}
-
 .logo-text {
   font-family: 'Orbitron', monospace;
-  font-size: 1.5rem;
-  font-weight: 900;
-  color: #00ffff;
-  text-shadow: 0 0 20px #00ffff;
-  letter-spacing: 0.1em;
+  font-size: 1.5em;
+  font-weight: bold;
+  color: #30ffe6;
+  text-shadow: 0 0 18px #00fee7aa;
+  letter-spacing: .13em;
 }
-
+.logo-icon {
+  color: #0fffc3;
+  font-size: 1.3em; margin-right: 6px;
+  text-shadow: 0 0 13px #0fffc340;
+}
 .status-indicator {
-  padding: 0.5rem 1.5rem;
-  background: rgba(0, 255, 255, 0.1);
-  border: 1px solid #00ffff;
-  border-radius: 20px;
+  background: rgba(0,255,255,0.1);
+  color: #0fffc3;
+  border: 1px solid #00ffee88;
+  border-radius: 19px;
+  font-size: 1em;
+  padding: .5em 1.7em;
   font-weight: 700;
-  font-size: 0.9rem;
-  text-shadow: 0 0 10px #00ffff;
-  animation: statusPulse 2s infinite;
+  letter-spacing: .13em;
+  box-shadow: 0 1px 8px #0fffc333;
+  animation: neonBlink 2s infinite;
 }
+@keyframes neonBlink { 50% { box-shadow: 0 0 18px #0fffd9; color: #00fee7; } }
 
-@keyframes statusPulse {
-  0%, 100% { box-shadow: 0 0 10px rgba(0, 255, 255, 0.5); }
-  50% { box-shadow: 0 0 25px rgba(0, 255, 255, 0.8); }
-}
-
-/* Main Navigation */
 .main-nav {
   display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-  padding: 1rem 2rem;
-  background: rgba(0, 20, 40, 0.8);
-  border-bottom: 1px solid rgba(0, 255, 255, 0.3);
-  backdrop-filter: blur(10px);
+  gap: 10px;
+  padding: 0.8em 2em;
+  border-bottom: 1.5px solid #00ffe225;
 }
-
 .nav-item {
-  padding: 0.7rem 1.5rem;
   background: transparent;
-  border: 1px solid rgba(0, 255, 255, 0.4);
-  color: #00ffff;
-  font-family: inherit;
-  font-weight: 600;
-  font-size: 0.95rem;
-  border-radius: 25px;
+  color: #00ffee;
+  border: 1.5px solid #23fce468;
+  font-weight: 700;
+  font-family: 'Orbitron', sans-serif;
+  letter-spacing: .10em;
+  border-radius: 18px;
+  padding: .6em 1.35em;
+  font-size: 1.04em;
   cursor: pointer;
-  transition: all 0.3s ease;
+  margin-right: 7px;
+  transition: all .18s;
+}
+.nav-item.active,
+.nav-item:focus, .nav-item:hover {
+  background: rgba(0,255,255,0.1);
+  color: #fff;
+  border-color: #0ffeee;
+  box-shadow: 0 0 13px #14fffb44;
+}
+
+.content-area { padding: 2em 1vw 1em 1vw; margin: auto; max-width: 1200px; }
+.section-header h2, .main-title {
+  font-family: 'Orbitron', monospace;
+  font-size: 2.5em;
+  color: #00fff6;
+  text-align: center;
+  text-shadow: 0 0 21px #00ffee, 0 0 4px #00fff77e;
+  margin: 1.3em 0 .35em 0;
   text-transform: uppercase;
-  letter-spacing: 0.05em;
+  letter-spacing: .11em;
+}
+.section-header p, .subtitle {
+  text-align: center;
+  color: #93fdff;
+  font-size: 1.2em;
+  margin-bottom: 2em;
+  letter-spacing: 0.04em;
 }
 
-.nav-item:hover, .nav-item.active {
-  background: rgba(0, 255, 255, 0.15);
-  border-color: #00ffff;
-  box-shadow: 0 0 20px rgba(0, 255, 255, 0.4);
-  transform: translateY(-2px);
+/* Neon Cards & Grids */
+.features-grid, .culture-grid, .monastery-grid, .food-grid, .achievement-grid, .tips-grid, .download-grid, .contact-container {
+  display: grid; gap: 2em; margin-bottom: 2em;
+  grid-template-columns: repeat(auto-fit, minmax(260px,1fr));
 }
-
-/* Content Area */
-.content-area {
-  padding: 2rem;
+.feature-card, .culture-card, .monastery-card, .food-card, .achievement-card, .contact-card {
+  background: rgba(0,30,50,0.84);
+  border: 1.3px solid #00efe3a0;
+  border-radius: 16px;
+  box-shadow: 0 0 16px #0fffc348;
+  padding: 2em;
+  transition: all 0.16s;
+  position: relative;
 }
-
-.content-section {
-  display: none;
-  animation: fadeInUp 0.6s ease-out;
+.feature-card:hover, .culture-card:hover, .monastery-card:hover, .food-card:hover, .achievement-card:hover, .contact-card:hover {
+  box-shadow: 0 0 25px #00ffefcc;
+  border-color: #00ffee;
 }
-
-.content-section.active {
+.feature-icon, .food-emoji, .contact-icon {
+  font-size: 2.2em;
+  text-shadow: 0 0 10px #0fffc399;
+  margin-bottom: .4em;
   display: block;
 }
-
-@keyframes fadeInUp {
-  from { opacity: 0; transform: translateY(30px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-/* Section Headers */
-.section-header {
-  text-align: center;
-  margin-bottom: 3rem;
-}
-
-.section-header h2 {
-  font-family: 'Orbitron', monospace;
-  font-size: 2.5rem;
-  font-weight: 900;
-  color: #00ffff;
-  text-shadow: 0 0 30px #00ffff;
-  margin-bottom: 0.5rem;
-  letter-spacing: 0.1em;
-}
-
-.section-header p {
-  font-size: 1.2rem;
-  color: rgba(0, 255, 255, 0.8);
-  letter-spacing: 0.05em;
-}
-
-/* HOME SECTION */
-.welcome-container {
-  max-width: 1200px;
-  margin: 0 auto;
-}
-
-.welcome-header {
-  text-align: center;
-  margin-bottom: 4rem;
-}
-
-.main-title {
-  font-family: 'Orbitron', monospace;
-  font-size: 4rem;
-  font-weight: 900;
-  color: #00ffff;
-  text-shadow: 0 0 40px #00ffff;
-  margin-bottom: 1rem;
-  letter-spacing: 0.1em;
-}
-
-.subtitle {
-  font-size: 1.4rem;
-  color: rgba(0, 255, 255, 0.8);
-  margin-bottom: 2rem;
-}
-
-.features-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 2rem;
-  margin-bottom: 4rem;
-}
-
-.feature-card {
-  background: rgba(0, 20, 40, 0.7);
-  border: 1px solid rgba(0, 255, 255, 0.3);
-  border-radius: 15px;
-  padding: 2rem;
-  text-align: center;
-  transition: all 0.3s ease;
-  backdrop-filter: blur(10px);
-}
-
-.feature-card:hover {
-  border-color: #00ffff;
-  box-shadow: 0 0 30px rgba(0, 255, 255, 0.3);
-  transform: translateY(-5px);
-}
-
-.feature-icon {
-  font-size: 3rem;
-  margin-bottom: 1rem;
-  filter: drop-shadow(0 0 10px #00ffff);
-}
-
-.feature-card h3 {
-  font-size: 1.3rem;
-  font-weight: 700;
-  color: #00ffff;
-  margin-bottom: 1rem;
-  text-shadow: 0 0 10px #00ffff;
-}
-
-.feature-card p {
-  color: rgba(0, 255, 255, 0.8);
-  line-height: 1.5;
-}
-
-.system-tips {
-  background: rgba(0, 20, 40, 0.8);
-  border: 2px solid #00ffff;
-  border-radius: 20px;
-  padding: 2rem;
-  text-align: center;
-}
-
-.system-tips h3 {
-  font-size: 1.5rem;
-  color: #00ffff;
-  text-shadow: 0 0 15px #00ffff;
-  margin-bottom: 1.5rem;
-}
-
-.tips-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 1rem;
-}
-
-.tip-item {
-  background: rgba(0, 255, 255, 0.1);
-  border: 1px solid rgba(0, 255, 255, 0.3);
-  border-radius: 10px;
-  padding: 1rem;
-  font-size: 0.9rem;
-  color: rgba(0, 255, 255, 0.9);
-}
-
-/* CULTURE SECTION */
-.culture-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 2rem;
-  margin-bottom: 3rem;
-}
-
-.culture-card {
-  background: rgba(0, 20, 40, 0.7);
-  border: 1px solid rgba(0, 255, 255, 0.3);
-  border-radius: 15px;
-  padding: 2rem;
-  transition: all 0.3s ease;
-}
-
-.culture-card:hover {
-  border-color: #00ffff;
-  box-shadow: 0 0 25px rgba(0, 255, 255, 0.3);
-}
-
-.culture-card h3 {
-  font-size: 1.3rem;
-  color: #00ffff;
-  text-shadow: 0 0 10px #00ffff;
-  margin-bottom: 1rem;
-}
-
-.culture-card p {
-  color: rgba(0, 255, 255, 0.8);
-  line-height: 1.5;
-  margin-bottom: 1.5rem;
-}
-
-.learn-btn {
-  background: transparent;
-  border: 1px solid #00ffff;
-  color: #00ffff;
-  padding: 0.5rem 1.5rem;
-  border-radius: 20px;
-  cursor: pointer;
-  font-family: inherit;
-  font-weight: 600;
-  transition: all 0.3s ease;
-}
-
-.learn-btn:hover {
-  background: rgba(0, 255, 255, 0.1);
-  box-shadow: 0 0 15px rgba(0, 255, 255, 0.5);
-}
-
-.download-section {
-  text-align: center;
-  background: rgba(0, 20, 40, 0.8);
-  border: 2px solid rgba(0, 255, 255, 0.5);
-  border-radius: 20px;
-  padding: 2rem;
-}
-
-.download-section h3 {
-  font-size: 1.5rem;
-  color: #00ffff;
-  text-shadow: 0 0 15px #00ffff;
-  margin-bottom: 2rem;
-}
-
-.download-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 1rem;
-}
-
-.download-btn {
-  background: rgba(0, 255, 255, 0.1);
-  border: 1px solid #00ffff;
-  color: #00ffff;
-  padding: 1rem;
-  border-radius: 15px;
-  cursor: pointer;
-  font-family: inherit;
-  font-weight: 600;
-  transition: all 0.3s ease;
-}
-
-.download-btn:hover {
-  background: rgba(0, 255, 255, 0.2);
-  box-shadow: 0 0 20px rgba(0, 255, 255, 0.5);
-}
-
-/* MONASTERY SECTION */
-.monastery-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 2rem;
-}
-
-.monastery-card {
-  background: rgba(0, 20, 40, 0.8);
-  border: 1px solid rgba(0, 255, 255, 0.3);
-  border-radius: 15px;
-  overflow: hidden;
-  transition: all 0.3s ease;
-}
-
-.monastery-card:hover {
-  border-color: #00ffff;
-  box-shadow: 0 0 30px rgba(0, 255, 255, 0.4);
-  transform: translateY(-5px);
-}
-
 .monastery-image {
-  width: 100%;
-  height: 200px;
+  width: 100%; max-height: 160px;
   object-fit: cover;
-  border-bottom: 1px solid rgba(0, 255, 255, 0.3);
+  border-radius: 10px 10px 0 0;
+  border-bottom: 1.5px solid #00ffee40;
+  margin-bottom: 1em;
+}
+.monastery-info h3, .food-card h3, .achievement-info h4 {
+  color: #0fffc3;
+  font-family: 'Orbitron', monospace;
+  margin: .7em 0 .4em 0;
+  font-size: 1.16em;
+  text-shadow: 0 0 10px #00fff788;
+  letter-spacing: .08em;
+}
+.monastery-buttons, .food-stats, .achievement-status,
+ .download-grid, .contact-info, .social-links {
+  display: flex; gap: 1em; justify-content: center; align-items: center;
 }
 
-.monastery-info {
-  padding: 1.5rem;
+.info-btn, .locate-btn, .learn-btn, .download-btn, .control-button,
+ .email-link, .feedback-btn, .social-btn {
+  background: transparent; color: #00ffee;
+  border: 1.1px solid #00ffee93;
+  border-radius: 14px;
+  padding: .6em 1.3em;
+  font-family: 'Orbitron', monospace;
+  cursor: pointer;
+  font-weight: 700;
+  transition: all 0.19s;
+  text-align: center;
+  margin: .3em 0;
+}
+.info-btn:hover, .locate-btn:hover, .learn-btn:hover, .download-btn:hover,
+.control-button:hover, .email-link:hover, .feedback-btn:hover, .social-btn:hover {
+  background: rgba(0,255,255,0.11);
+  color: #111 !important;
+  box-shadow: 0 0 12px #00ffcf73;
+  border-color: #00ffee;
 }
 
-.monastery-info h3 {
-  font-size: 1.2rem;
-  color: #00ffff;
-  text-shadow: 0 0 10px #00ffff;
-  margin-bottom: 0.5rem;
-}
-
-.monastery-info p {
-  color: rgba(0, 255, 255, 0.8);
-  line-height: 1.5;
-  margin-bottom: 1.5rem;
-}
-
-.monastery-buttons {
-  display: flex;
-  gap: 1rem;
-}
-
-.info-btn, .locate-btn {
-  flex: 1;
-  padding: 0.7rem;
-  border: 1px solid #00ffff;
-  background: transparent;
-  color: #00ffff;
+.food-stats span, .points, .achievement-reward {
+  font-weight: bolder;
   border-radius: 10px;
-  cursor: pointer;
-  font-family: inherit;
-  font-weight: 600;
-  transition: all 0.3s ease;
+  padding: .3em .7em;
+  font-size: .98em;
 }
+.difficulty { background: rgba(0,255,255,0.08); color: #00ffee; }
+.points, .achievement-reward { background: rgba(0,255,136,0.08); color: #00ff88;}
+.locked { background: rgba(255,80,80,0.16); border: 1px solid #ff6464; color:#ff6464; font-size:.94em; }
+.achievement-icon { font-size:2.1em; margin-right:1em; }
 
-.info-btn:hover, .locate-btn:hover {
-  background: rgba(0, 255, 255, 0.1);
-  box-shadow: 0 0 15px rgba(0, 255, 255, 0.5);
+/* Map Section */
+.map-container, .route-info {
+  background:rgba(0,24,40,0.8);
+  border-radius:14px;
+  box-shadow: 0 2px 24px #0fffea30;
+  border: 1.5px solid #00ffe221;
+  margin-bottom: 2em;
+  padding: 2em 1em;
 }
-
-/* FOOD SECTION */
-.food-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 2rem;
-}
-
-.food-card {
-  background: rgba(0, 20, 40, 0.8);
-  border: 1px solid rgba(0, 255, 255, 0.3);
-  border-radius: 15px;
-  padding: 2rem;
-  text-align: center;
-  transition: all 0.3s ease;
-}
-
-.food-card:hover {
-  border-color: #00ff88;
-  box-shadow: 0 0 25px rgba(0, 255, 136, 0.4);
-}
-
-.food-emoji {
-  font-size: 3rem;
-  margin-bottom: 1rem;
-  filter: drop-shadow(0 0 10px #00ffff);
-}
-
-.food-card h3 {
-  font-size: 1.2rem;
-  color: #00ffff;
-  text-shadow: 0 0 10px #00ffff;
-  margin-bottom: 0.5rem;
-}
-
-.food-card p {
-  color: rgba(0, 255, 255, 0.8);
-  line-height: 1.5;
-  margin-bottom: 1.5rem;
-}
-
-.food-stats {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.difficulty {
-  padding: 0.3rem 0.8rem;
-  border: 1px solid rgba(0, 255, 255, 0.5);
-  border-radius: 15px;
-  font-size: 0.8rem;
-  color: rgba(0, 255, 255, 0.9);
-}
-
-.points {
-  color: #00ff88;
-  font-weight: 700;
-  text-shadow: 0 0 10px #00ff88;
-}
-
-/* ACHIEVEMENT SECTION */
-.achievement-subsection {
-  margin-bottom: 3rem;
-}
-
-.achievement-subsection h3 {
-  font-size: 1.8rem;
-  color: #00ff88;
-  text-shadow: 0 0 15px #00ff88;
-  margin-bottom: 2rem;
-  text-align: center;
-}
-
-.achievement-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 2rem;
-}
-
-.achievement-card {
-  background: rgba(0, 20, 40, 0.8);
-  border: 1px solid rgba(0, 255, 255, 0.3);
-  border-radius: 15px;
-  padding: 1.5rem;
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  transition: all 0.3s ease;
-}
-
-.achievement-card:hover {
-  border-color: #00ff88;
-  box-shadow: 0 0 25px rgba(0, 255, 136, 0.3);
-}
-
-.achievement-icon {
-  font-size: 2.5rem;
-  filter: drop-shadow(0 0 10px #00ffff);
-}
-
-.achievement-info {
-  flex: 1;
-}
-
-.achievement-info h4 {
-  font-size: 1.1rem;
-  color: #00ffff;
-  text-shadow: 0 0 10px #00ffff;
-  margin-bottom: 0.5rem;
-}
-
-.achievement-info p {
-  color: rgba(0, 255, 255, 0.8);
-  font-size: 0.9rem;
-  margin-bottom: 0.5rem;
-}
-
-.achievement-reward {
-  color: #00ff88;
-  font-weight: 700;
-  font-size: 0.9rem;
-  text-shadow: 0 0 10px #00ff88;
-}
-
-.achievement-status {
-  padding: 0.5rem 1rem;
-  border-radius: 15px;
-  font-size: 0.8rem;
-  font-weight: 700;
-}
-
-.achievement-status.locked {
-  background: rgba(255, 100, 100, 0.1);
-  border: 1px solid #ff6464;
-  color: #ff6464;
-}
-
-/* MAP SECTION */
-.map-container {
-  max-width: 1200px;
-  margin: 0 auto;
-}
-
 .live-map-element {
-  height: 500px;
-  border: 2px solid #00ffff;
+  width: 100%; height: 340px;
+  border: 2px solid #00ffeea0;
   border-radius: 15px;
-  box-shadow: 0 0 30px rgba(0, 255, 255, 0.3);
-  margin-bottom: 2rem;
+  margin-bottom: 1.3em;
+  box-shadow: 0 0 18px #00ffee88;
 }
+.route-info h3 { color: #00ff88; }
+.stat-label { color: #0cf; font-size: .98em; }
+.stat-value { color: #00fff6; font-size: 1.1em; font-weight: 800; margin-left:.3em; }
 
-.map-controls {
-  display: flex;
-  justify-content: center;
-  gap: 1rem;
-  margin-bottom: 2rem;
-}
-
-.control-button {
-  padding: 0.8rem 1.5rem;
-  background: rgba(0, 255, 255, 0.1);
-  border: 1px solid #00ffff;
-  color: #00ffff;
-  border-radius: 20px;
-  cursor: pointer;
-  font-family: inherit;
-  font-weight: 600;
-  transition: all 0.3s ease;
-}
-
-.control-button:hover {
-  background: rgba(0, 255, 255, 0.2);
-  box-shadow: 0 0 20px rgba(0, 255, 255, 0.5);
-}
-
-.route-info {
-  background: rgba(0, 20, 40, 0.8);
-  border: 1px solid rgba(0, 255, 255, 0.3);
-  border-radius: 15px;
-  padding: 2rem;
-  text-align: center;
-}
-
-.route-info h3 {
-  color: #00ff88;
-  text-shadow: 0 0 15px #00ff88;
-  margin-bottom: 1rem;
-}
-
-.route-stats {
-  display: flex;
-  justify-content: center;
-  gap: 3rem;
-  margin-top: 1.5rem;
-}
-
-.stat-item {
-  text-align: center;
-}
-
-.stat-label {
-  display: block;
-  color: rgba(0, 255, 255, 0.7);
-  font-size: 0.9rem;
-  margin-bottom: 0.5rem;
-}
-
-.stat-value {
-  display: block;
-  color: #00ffff;
-  font-size: 1.2rem;
-  font-weight: 700;
-  text-shadow: 0 0 10px #00ffff;
-}
-
-/* CONTACT SECTION */
-.contact-container {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 2rem;
-  max-width: 1000px;
-  margin: 0 auto;
-}
-
-.contact-card {
-  background: rgba(0, 20, 40, 0.8);
-  border: 1px solid rgba(0, 255, 255, 0.3);
-  border-radius: 15px;
-  padding: 2rem;
-  text-align: center;
-  transition: all 0.3s ease;
-}
-
-.contact-card:hover {
-  border-color: #00ffff;
-  box-shadow: 0 0 30px rgba(0, 255, 255, 0.3);
-}
-
-.contact-icon {
-  font-size: 3rem;
-  margin-bottom: 1rem;
-  filter: drop-shadow(0 0 15px #00ffff);
-}
-
-.contact-card h3 {
-  font-size: 1.3rem;
-  color: #00ffff;
-  text-shadow: 0 0 10px #00ffff;
-  margin-bottom: 1rem;
-}
-
-.contact-card p {
-  color: rgba(0, 255, 255, 0.8);
-  margin-bottom: 2rem;
-}
-
-.email-link {
-  display: inline-block;
-  color: #00ff88;
+.contact-card a.email-link {
+  background: rgba(0,255,136,0.08);
+  color:#00ff88; border-color:#00ff88;
   text-decoration: none;
-  font-weight: 700;
-  font-size: 1.1rem;
-  padding: 1rem 2rem;
-  border: 1px solid #00ff88;
-  border-radius: 25px;
-  transition: all 0.3s ease;
-  text-shadow: 0 0 10px #00ff88;
+  font-size:1.1em;
+}
+.contact-card a.email-link:hover {
+  background: #00ff8855; color:#fff;
 }
 
-.email-link:hover {
-  background: rgba(0, 255, 136, 0.1);
-  box-shadow: 0 0 20px rgba(0, 255, 136, 0.5);
+footer, .footer-section {
+  margin: 2em auto 0 auto;
+  padding: 2em 1em;
+  background:rgba(0,13,33,0.7); border-radius:18px;
+  color:#aaeeff;
 }
 
-.feedback-btn, .social-btn {
-  background: transparent;
-  border: 1px solid #00ffff;
-  color: #00ffff;
-  padding: 0.8rem 1.5rem;
-  border-radius: 20px;
-  cursor: pointer;
-  font-family: inherit;
-  font-weight: 600;
-  margin: 0.5rem;
-  transition: all 0.3s ease;
-}
-
-.feedback-btn:hover, .social-btn:hover {
-  background: rgba(0, 255, 255, 0.1);
-  box-shadow: 0 0 15px rgba(0, 255, 255, 0.5);
-}
-
-/* Responsive Design */
-@media (max-width: 768px) {
-  .top-header {
-    flex-direction: column;
-    gap: 1rem;
-    text-align: center;
-  }
-  
-  .main-nav {
-    justify-content: center;
-  }
-  
-  .content-area {
-    padding: 1rem;
-  }
-  
-  .main-title {
-    font-size: 2.5rem;
-  }
-  
-  .section-header h2 {
-    font-size: 2rem;
-  }
-  
-  .features-grid,
-  .culture-grid,
-  .monastery-grid,
-  .food-grid,
-  .achievement-grid {
-    grid-template-columns: 1fr;
-  }
-  
-  .monastery-buttons,
-  .route-stats {
-    flex-direction: column;
-    gap: 0.5rem;
-  }
-  
-  .map-controls {
-    flex-direction: column;
-    align-items: center;
-  }
+/* Responsive */
+@media (max-width:850px) {
+  .features-grid, .culture-grid, .monastery-grid, .food-grid, .achievement-grid, .tips-grid, .download-grid, .contact-container { grid-template-columns: 1fr; }
+  .main-title { font-size:2em; }
 }
