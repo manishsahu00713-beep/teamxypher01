@@ -2,596 +2,388 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>SIKKIM EXPLORER - XYPHER</title>
+  <title>Sikkim Explorer - XYPHER</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@400;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+  <style>
+    body {
+      font-family: 'Rajdhani','Orbitron',Arial,sans-serif;
+      background: #07101a;
+      color: #00fff7;
+      margin: 0;
+      min-height: 100vh;
+      letter-spacing: .03em;
+    }
+    body::before {
+      content: "";
+      position: fixed; left:0; top:0; width:100vw; height:100vh; z-index: -1;
+      background: repeating-linear-gradient(120deg,#02e9f410 0 2px,transparent 2px 40px),
+                  linear-gradient(140deg,#072344 0%,#0c132b 54%,#181c2a 100%);
+      animation: gridflow 16s linear infinite;
+    }
+    @keyframes gridflow { to { background-position: 120px 40px, 0 0; } }
+    nav {
+      background: rgba(0,18,48,0.91);
+      padding: 0.7em 1vw;
+      display: flex; gap:8px; flex-wrap:wrap;
+      border-bottom: 2px solid #00ffe544; 
+      position: sticky; top:0; z-index: 99;
+    }
+    .nav-btn {
+      background: transparent; color: #00fff7; font-family: 'Orbitron', monospace;
+      border: 1.5px solid #0dfdf689; border-radius: 16px; padding: .54em 1.2em;
+      letter-spacing: .08em; font-weight:700;font-size:1em; cursor:pointer; margin-right:3px;
+      transition: all .17s;
+    }
+    .nav-btn.active, .nav-btn:focus, .nav-btn:hover {
+      background: rgba(0,255,255,0.13); color: #fff;
+      border-color: #00ffe7;
+      box-shadow: 0 0 11px #0fffd533;
+    }
+    .cyber-section { display: none; padding: 2em 2vw; max-width: 1200px; margin:auto;}
+    .cyber-section.active { display: block; animation: fadeInUp .7s;}
+    @keyframes fadeInUp {from{opacity:0;transform:translateY(24px);} to{opacity:1;}}
+    .section-header h2, .main-title {
+      font-family: 'Orbitron'; font-size: 2.2em;
+      color:#07fff8; text-shadow:0 0 22px #04fff7bb;
+      margin-top:1.3em;margin-bottom:.5em;
+      text-transform: uppercase;
+    }
+    .section-header p, .subtitle { color: #92fafd; font-size: 1.18em; text-align:center; }
+    .neon-grid {display: grid; gap:2em; margin:2em 0;}
+    @media (min-width:700px) {
+      .neon-grid {grid-template-columns: repeat(auto-fit, minmax(270px,1fr));}
+    }
+    .neon-card {
+      background: rgba(0,28,38,0.92);
+      border:1.7px solid #03fff099;
+      border-radius:14px;box-shadow:0 0 18px #0cfcd945;
+      padding:1.9em 1em 1.2em 1em;text-align:center;
+      transition: all .17s;
+    }
+    .neon-card:hover {border-color:#00fff7;box-shadow:0 0 25px #03fff0cc;}
+    .neon-emoji,.food-emoji, .contact-emoji {
+      font-size:2.2em;margin-bottom:.2em;text-shadow:0 0 10px #00ffe3;
+    }
+    .mon-img {width:100%;border-radius:10px 10px 0 0;max-height:140px;object-fit:cover;background:#041a2a;}
+    .card-title {font-family:'Orbitron';color:#0fffdc;font-size:1.13em;margin:.7em 0 .4em;}
+    .btn-bar, .food-stats, .mon-btns, .contact-flex {display:flex;gap:.8em;justify-content:center;}
+    .btn-info,.btn-locate,.btn-learn,.btn-down,.btn-feed,.btn-route,.email-link { 
+      background:transparent; color:#00fff7; border:1.1px solid #00fff7a8; border-radius:12px;
+      padding:.54em 1.18em;font-family:'Orbitron',monospace;cursor:pointer;font-weight:700;
+      transition: all .16s; margin-top:.5em;
+    }
+    .btn-info:hover,.btn-locate:hover,.btn-learn:hover,.btn-down:hover,
+    .btn-feed:hover,.btn-route:hover,.email-link:hover {
+      background: rgba(0,255,255,0.12); color:#001822;box-shadow: 0 0 13px #00fdffc3;}
+    .locked {background:rgba(240,70,80,0.2);color:#ff6464;}
+    /* Map Styles */
+    #mapid { width: 100%; height: 350px; border-radius:18px; box-shadow:0 0 21px #00fff448; margin-bottom:2em; border:2px solid #0fffd745;}
+    .map-controls {display:flex;gap:1em;justify-content:center;margin:.7em 0;}
+    .btn-mapc {padding:.6em 1.22em;}
+    .route-info {background:rgba(0,28,38,0.84);border:1.1px solid #0fffd852;border-radius:11px;padding:1.1em;margin:1.6em 0;}
+    .route-info h3 {color:#00ff88;margin-bottom:1em;}
+    .stat-label{color:#0cf;}.stat-value{color:#00fff6;font-weight:800;}
+    /* Contact */
+    .contact-card {text-align:center;}
+    .contact-emoji{font-size:2.4em;}
+    .email-link {display:inline-block;margin-top:1em;}
+    /* Responsive tweaks */
+    @media (max-width:600px){
+      .neon-grid {grid-template-columns: 1fr;}
+      .content-area {padding: 8px;}
+      .main-title{font-size:1.5em;}
+      nav {flex-wrap: wrap;}
+    }
+  </style>
 </head>
 <body>
-  <!-- Animated Background -->
-  <div class="cyber-bg-grid"></div>
-  
-  <!-- Main Container -->
-  <div class="main-container">
-    <!-- Top Header -->
-    <header class="top-header">
-      <div class="logo-section">
-        <span class="logo-icon">△</span>
-        <span class="logo-text">SIKKIM EXPLORER</span>
+  <nav>
+    <button class="nav-btn active" data-section="home">Home</button>
+    <button class="nav-btn" data-section="culture">Culture & Heritage</button>
+    <button class="nav-btn" data-section="monastery">Monastery Archive</button>
+    <button class="nav-btn" data-section="food">Food Quest</button>
+    <button class="nav-btn" data-section="achievement">Achievement</button>
+    <button class="nav-btn" data-section="map">Map</button>
+    <button class="nav-btn" data-section="contact">Contact Us</button>
+  </nav>
+  <main class="content-area">
+
+    <!-- Home -->
+    <section id="home" class="cyber-section active">
+      <h1 class="main-title">WELCOME TO SIKKIM</h1>
+      <p class="subtitle">Embark on a digital journey through the mystical land of monasteries</p>
+      <div class="neon-grid">
+        <div class="neon-card"><div class="neon-emoji">🏔️</div><div class="card-title">Explore Monasteries</div>Discover ancient Buddhist temples and their history.</div>
+        <div class="neon-card"><div class="neon-emoji">🍜</div><div class="card-title">Taste Local Cuisine</div>Sample Sikkimese flavours and traditions.</div>
+        <div class="neon-card"><div class="neon-emoji">🎯</div><div class="card-title">Unlock Achievements</div>Complete quests and earn your rewards.</div>
+        <div class="neon-card"><div class="neon-emoji">🗺️</div><div class="card-title">Interactive Map</div>Navigate with real-time tracking and routing.</div>
       </div>
-      <div class="status-indicator">SYSTEM ONLINE</div>
-    </header>
+      <div class="neon-card" style="margin-top:2em;">
+        <h3 class="card-title">💡 SYSTEM TIPS</h3>
+        <div class="neon-grid" style="gap:1em;">
+          <div>📱 Enable location services for navigation</div>
+          <div>🏯 Visit all monasteries to unlock status</div>
+          <div>🍴 Try local foods for taste XP</div>
+          <div>📸 Document your journey for bonus</div>
+        </div>
+      </div>
+    </section>
 
-    <!-- Navigation Menu -->
-    <nav class="main-nav">
-      <button class="nav-item active" data-section="home">Home</button>
-      <button class="nav-item" data-section="culture">Culture & Heritage</button>
-      <button class="nav-item" data-section="monastery">Monastery Archive</button>
-      <button class="nav-item" data-section="food">Food Quest</button>
-      <button class="nav-item" data-section="achievement">Achievement</button>
-      <button class="nav-item" data-section="map">Map</button>
-      <button class="nav-item" data-section="contact">Contact Us</button>
-    </nav>
+    <!-- Culture & Heritage -->
+    <section id="culture" class="cyber-section">
+      <div class="section-header">
+        <h2>CULTURE & HERITAGE</h2>
+        <p>Discover Sikkim's rich cultural tapestry.</p>
+      </div>
+      <div class="neon-grid">
+        <div class="neon-card">
+          <div class="card-title">📚 HISTORY</div>
+          Ancient kingdom founded in 1642, with centuries of Buddhist heritage and royal lineage.<br>
+          <button class="btn-learn">Learn More</button>
+        </div>
+        <div class="neon-card">
+          <div class="card-title">🌱 ORIGIN</div>
+          Land of Lepchas. Tibetan and Nepali influences<br>
+          <button class="btn-learn">Learn More</button>
+        </div>
+        <div class="neon-card">
+          <div class="card-title">🎭 TRADITIONS</div>
+          Mask dances, musical festivals, rituals<br>
+          <button class="btn-learn">Learn More</button>
+        </div>
+        <div class="neon-card">
+          <div class="card-title">🏛️ ARCHITECTURE</div>
+          Iconic monasteries, wood carvings, murals<br>
+          <button class="btn-learn">Learn More</button>
+        </div>
+        <div class="neon-card">
+          <div class="card-title">🎨 ART & CRAFT</div>
+          Thangka paintings, wood, and handloom<br>
+          <button class="btn-learn">Learn More</button>
+        </div>
+        <div class="neon-card">
+          <div class="card-title">📖 LANGUAGES</div>
+          Nepali, Sikkimese, Lepcha, Hindi, English<br>
+          <button class="btn-learn">Learn More</button>
+        </div>
+      </div>
+      <div class="neon-card" style="margin-top:2em;">
+        <div class="card-title">📥 DOWNLOAD E-RESOURCES</div>
+        <div class="btn-bar">
+          <button class="btn-down">📘 Guide PDF</button>
+          <button class="btn-down">🎵 Music</button>
+          <button class="btn-down">📸 Photos</button>
+          <button class="btn-down">🗺️ Heritage Map</button>
+        </div>
+      </div>
+    </section>
 
-    <!-- Content Sections -->
-    <main class="content-area">
-      
-      <!-- HOME SECTION -->
-      <section id="home" class="content-section active">
-        <div class="welcome-container">
-          <div class="welcome-header">
-            <h1 class="main-title">WELCOME TO SIKKIM</h1>
-            <p class="subtitle">Embark on a digital journey through the mystical land of monasteries</p>
+    <!-- Monastery Archive -->
+    <section id="monastery" class="cyber-section">
+      <div class="section-header">
+        <h2>MONASTERY ARCHIVE</h2>
+        <p>Explore the sacred sites</p>
+      </div>
+      <div class="neon-grid">
+        <div class="neon-card">
+          <img src="1000020084.jpg" class="mon-img" alt="Rumtek">
+          <div class="card-title">RUMTEK MONASTERY</div>
+          Seat of the Karmapa, golden roofs, sacred rituals.
+          <div class="mon-btns">
+            <button class="btn-info" onclick="openWiki('Rumtek_Monastery')">Info</button>
+            <button class="btn-locate" onclick="openGM(27.3158,88.5465)">Route</button>
           </div>
-          
-          <div class="features-grid">
-            <div class="feature-card">
-              <div class="feature-icon">🏔️</div>
-              <h3>Explore Monasteries</h3>
-              <p>Discover ancient Buddhist temples and their rich history</p>
-            </div>
-            <div class="feature-card">
-              <div class="feature-icon">🍜</div>
-              <h3>Taste Local Cuisine</h3>
-              <p>Experience authentic Sikkimese flavors and traditions</p>
-            </div>
-            <div class="feature-card">
-              <div class="feature-icon">🎯</div>
-              <h3>Unlock Achievements</h3>
-              <p>Complete quests and earn rewards for your journey</p>
-            </div>
-            <div class="feature-card">
-              <div class="feature-icon">🗺️</div>
-              <h3>Interactive Maps</h3>
-              <p>Navigate with real-time location tracking</p>
-            </div>
+        </div>
+        <div class="neon-card">
+          <img src="1000020087.jpg" class="mon-img" alt="Pemayangtse">
+          <div class="card-title">PEMAYANGTSE</div>
+          Second oldest, Zangdok Palri sculpture.
+          <div class="mon-btns">
+            <button class="btn-info" onclick="openWiki('Pemayangtse_Monastery')">Info</button>
+            <button class="btn-locate" onclick="openGM(27.2945,88.2122)">Route</button>
           </div>
+        </div>
+        <div class="neon-card">
+          <img src="1000020090.jpg" class="mon-img" alt="Ralang">
+          <div class="card-title">RALANG MONASTERY</div>
+          Cham dances, murals, festivals.
+          <div class="mon-btns">
+            <button class="btn-info" onclick="openWiki('Ralang_Monastery')">Info</button>
+            <button class="btn-locate" onclick="openGM(27.219,88.366)">Route</button>
+          </div>
+        </div>
+        <div class="neon-card">
+          <img src="1000020093.jpg" class="mon-img" alt="Dubdi">
+          <div class="card-title">DUBDI MONASTERY</div>
+          Oldest, forest retreat.
+          <div class="mon-btns">
+            <button class="btn-info" onclick="openWiki('Dubdi_Monastery')">Info</button>
+            <button class="btn-locate" onclick="openGM(27.3667,88.2167)">Route</button>
+          </div>
+        </div>
+        <div class="neon-card">
+          <img src="1000020092.jpg" class="mon-img" alt="Phodong">
+          <div class="card-title">PHODONG MONASTERY</div>
+          Kagyu lineage, festivals, murals.
+          <div class="mon-btns">
+            <button class="btn-info" onclick="openWiki('Phodong_Monastery')">Info</button>
+            <button class="btn-locate" onclick="openGM(27.3668,88.6014)">Route</button>
+          </div>
+        </div>
+        <div class="neon-card">
+          <img src="1000020094.jpg" class="mon-img" alt="Enchey">
+          <div class="card-title">ENCHEY MONASTERY</div>
+          Guardian, Cham festival.
+          <div class="mon-btns">
+            <button class="btn-info" onclick="openWiki('Enchey_Monastery')">Info</button>
+            <button class="btn-locate" onclick="openGM(27.3389,88.6167)">Route</button>
+          </div>
+        </div>
+        <div class="neon-card">
+          <img src="1000020081.jpg" class="mon-img" alt="Tsuklakhang">
+          <div class="card-title">TSUKLAKHANG</div>
+          Royal chapel, relics, flags.
+          <div class="mon-btns">
+            <button class="btn-info" onclick="openWiki('Tsuklakhang_Palace')">Info</button>
+            <button class="btn-locate" onclick="openGM(27.334,88.613)">Route</button>
+          </div>
+        </div>
+      </div>
+    </section>
 
-          <div class="system-tips">
-            <h3>💡 SYSTEM TIPS</h3>
-            <div class="tips-grid">
-              <div class="tip-item">📱 Enable location services for better navigation</div>
-              <div class="tip-item">🎮 Complete all monastery visits to unlock master status</div>
-              <div class="tip-item">🍴 Try local dishes to earn taste achievement points</div>
-              <div class="tip-item">📸 Document your journey for bonus rewards</div>
-            </div>
-          </div>
-        </div>
-      </section>
+    <!-- Food Quest -->
+    <section id="food" class="cyber-section">
+      <div class="section-header"><h2>FOOD QUEST</h2><p>Your culinary adventure!</p></div>
+      <div class="neon-grid">
+        <div class="neon-card"><div class="food-emoji">🥟</div><div class="card-title">Momos</div>Steamed dumplings. <div class="food-stats"><span class="difficulty">Easy</span><span class="points">+50 XP</span></div></div>
+        <div class="neon-card"><div class="food-emoji">🍜</div><div class="card-title">Thukpa</div>Noodle soup. <div class="food-stats"><span class="difficulty">Medium</span><span class="points">+75 XP</span></div></div>
+        <div class="neon-card"><div class="food-emoji">🥘</div><div class="card-title">Phagshapa</div>Pork curry. <div class="food-stats"><span class="difficulty">Hard</span><span class="points">+100 XP</span></div></div>
+        <div class="neon-card"><div class="food-emoji">🧀</div><div class="card-title">Chhurpi</div>Yak cheese. <div class="food-stats"><span class="difficulty">Medium</span><span class="points">+60 XP</span></div></div>
+        <div class="neon-card"><div class="food-emoji">🍺</div><div class="card-title">Chang</div>Millet beer.<div class="food-stats"><span class="difficulty">Hard</span><span class="points">+80 XP</span></div></div>
+        <div class="neon-card"><div class="food-emoji">🍰</div><div class="card-title">Sel Roti</div>Sweet bread. <div class="food-stats"><span class="difficulty">Easy</span><span class="points">+40 XP</span></div></div>
+        <div class="neon-card"><div class="food-emoji">🥬</div><div class="card-title">Gundruk</div>Fermented greens. <div class="food-stats"><span class="difficulty">Medium</span><span class="points">+70 XP</span></div></div>
+        <div class="neon-card"><div class="food-emoji">🍲</div><div class="card-title">Kinema</div>Fermented soy curry. <div class="food-stats"><span class="difficulty">Hard</span><span class="points">+90 XP</span></div></div>
+      </div>
+    </section>
 
-      <!-- CULTURE & HERITAGE SECTION -->
-      <section id="culture" class="content-section">
-        <div class="section-header">
-          <h2>CULTURE & HERITAGE</h2>
-          <p>Discover the rich cultural tapestry of Sikkim</p>
-        </div>
-        
-        <div class="culture-grid">
-          <div class="culture-card">
-            <h3>📚 HISTORY</h3>
-            <p>Ancient kingdom established in 1642, rich Buddhist heritage spanning centuries</p>
-            <button class="learn-btn">Learn More</button>
-          </div>
-          <div class="culture-card">
-            <h3>🌱 ORIGIN</h3>
-            <p>Land of the Lepchas, influenced by Tibetan Buddhism and Nepali traditions</p>
-            <button class="learn-btn">Learn More</button>
-          </div>
-          <div class="culture-card">
-            <h3>🎭 TRADITIONS</h3>
-            <p>Vibrant festivals, mask dances, and spiritual ceremonies throughout the year</p>
-            <button class="learn-btn">Learn More</button>
-          </div>
-          <div class="culture-card">
-            <h3>🏛️ ARCHITECTURE</h3>
-            <p>Traditional Tibetan-style monasteries with intricate woodwork and paintings</p>
-            <button class="learn-btn">Learn More</button>
-          </div>
-          <div class="culture-card">
-            <h3>🎨 ART & CRAFT</h3>
-            <p>Thangka paintings, wood carving, and traditional textile weaving</p>
-            <button class="learn-btn">Learn More</button>
-          </div>
-          <div class="culture-card">
-            <h3>📖 LANGUAGES</h3>
-            <p>Nepali, Sikkimese, Lepcha, Hindi, and English spoken across regions</p>
-            <button class="learn-btn">Learn More</button>
-          </div>
-        </div>
-        
-        <div class="download-section">
-          <h3>📥 DOWNLOAD E-RESOURCES</h3>
-          <div class="download-grid">
-            <button class="download-btn">📘 Cultural Guide PDF</button>
-            <button class="download-btn">🎵 Traditional Music</button>
-            <button class="download-btn">📸 Photo Gallery</button>
-            <button class="download-btn">🗺️ Heritage Map</button>
-          </div>
-        </div>
-      </section>
+    <!-- Achievement -->
+    <section id="achievement" class="cyber-section">
+      <div class="section-header"><h2>ACHIEVEMENTS</h2><p>Unlock rewards</p></div>
+      <div><h3>🍽️ Taste Achievements</h3></div>
+      <div class="neon-grid">
+        <div class="neon-card"><div class="food-emoji">🥟</div>FAST BITE<div>Try your first Sikkimese dish</div><div class="points">+100 XP</div><div class="locked">LOCKED</div></div>
+        <div class="neon-card"><div class="food-emoji">🍜</div>SOUP MASTER<div>Try 3 thukpa</div><div class="points">+250 XP</div><div class="locked">LOCKED</div></div>
+        <div class="neon-card"><div class="food-emoji">🧀</div>CHEESE CONNOISSEUR<div>Try chhurpi</div><div class="points">+150 XP</div><div class="locked">LOCKED</div></div>
+        <div class="neon-card"><div class="food-emoji">🍺</div>CHANG CHAMPION<div>Try millet beer</div><div class="points">+200 XP</div><div class="locked">LOCKED</div></div>
+      </div>
+      <div><h3>🏔️ Explore Achievements</h3></div>
+      <div class="neon-grid">
+        <div class="neon-card"><div class="food-emoji">🏯</div>MONASTERY VISITOR<div>Visit 1 monastery</div><div class="points">+100 XP</div><div class="locked">LOCKED</div></div>
+        <div class="neon-card"><div class="food-emoji">🎭</div>CULTURE EXPLORER<div>Complete culture section</div><div class="points">+300 XP</div><div class="locked">LOCKED</div></div>
+        <div class="neon-card"><div class="food-emoji">🗺️</div>NAVIGATOR<div>Use map feature 5×</div><div class="points">+150 XP</div><div class="locked">LOCKED</div></div>
+        <div class="neon-card"><div class="food-emoji">👑</div>SIKKIM MASTER<div>Complete all achievements</div><div class="points">+1000 XP</div><div class="locked">LOCKED</div></div>
+      </div>
+    </section>
 
-      <!-- MONASTERY ARCHIVE SECTION -->
-      <section id="monastery" class="content-section">
-        <div class="section-header">
-          <h2>MONASTERY ARCHIVE</h2>
-          <p>Explore the sacred monasteries of Sikkim</p>
-        </div>
-        
-        <div class="monastery-grid">
-          <div class="monastery-card">
-            <img src="1000020084.jpg" alt="Rumtek" class="monastery-image">
-            <div class="monastery-info">
-              <h3>RUMTEK MONASTERY</h3>
-              <p>Seat of the Karmapa, known for golden roofs and sacred rituals</p>
-              <div class="monastery-buttons">
-                <button onclick="openWikipedia('Rumtek_Monastery')" class="info-btn">INFO</button>
-                <button onclick="openGoogleMaps(27.3158, 88.5465)" class="locate-btn">LOCATE</button>
-              </div>
-            </div>
-          </div>
-          
-          <div class="monastery-card">
-            <img src="1000020087.jpg" alt="Pemayangtse" class="monastery-image">
-            <div class="monastery-info">
-              <h3>PEMAYANGTSE</h3>
-              <p>Second oldest monastery, famous for Zangdok Palri sculpture</p>
-              <div class="monastery-buttons">
-                <button onclick="openWikipedia('Pemayangtse_Monastery')" class="info-btn">INFO</button>
-                <button onclick="openGoogleMaps(27.2945, 88.2122)" class="locate-btn">LOCATE</button>
-              </div>
-            </div>
-          </div>
-          
-          <div class="monastery-card">
-            <img src="1000020090.jpg" alt="Ralang" class="monastery-image">
-            <div class="monastery-info">
-              <h3>RALANG MONASTERY</h3>
-              <p>Famous for Cham dances and beautiful murals</p>
-              <div class="monastery-buttons">
-                <button onclick="openWikipedia('Ralang_Monastery')" class="info-btn">INFO</button>
-                <button onclick="openGoogleMaps(27.219, 88.366)" class="locate-btn">LOCATE</button>
-              </div>
-            </div>
-          </div>
-          
-          <div class="monastery-card">
-            <img src="1000020093.jpg" alt="Dubdi" class="monastery-image">
-            <div class="monastery-info">
-              <h3>DUBDI MONASTERY</h3>
-              <p>Oldest monastery in Sikkim, serene forest retreat</p>
-              <div class="monastery-buttons">
-                <button onclick="openWikipedia('Dubdi_Monastery')" class="info-btn">INFO</button>
-                <button onclick="openGoogleMaps(27.3667, 88.2167)" class="locate-btn">LOCATE</button>
-              </div>
-            </div>
-          </div>
-          
-          <div class="monastery-card">
-            <img src="1000020092.jpg" alt="Phodong" class="monastery-image">
-            <div class="monastery-info">
-              <h3>PHODONG MONASTERY</h3>
-              <p>Rebuilt monastery with vibrant murals and festivals</p>
-              <div class="monastery-buttons">
-                <button onclick="openWikipedia('Phodong_Monastery')" class="info-btn">INFO</button>
-                <button onclick="openGoogleMaps(27.3668, 88.6014)" class="locate-btn">LOCATE</button>
-              </div>
-            </div>
-          </div>
-          
-          <div class="monastery-card">
-            <img src="1000020094.jpg" alt="Enchey" class="monastery-image">
-            <div class="monastery-info">
-              <h3>ENCHEY MONASTERY</h3>
-              <p>Guardian monastery of Gangtok with annual Cham festival</p>
-              <div class="monastery-buttons">
-                <button onclick="openWikipedia('Enchey_Monastery')" class="info-btn">INFO</button>
-                <button onclick="openGoogleMaps(27.3389, 88.6167)" class="locate-btn">LOCATE</button>
-              </div>
-            </div>
-          </div>
-          
-          <div class="monastery-card">
-            <img src="1000020081.jpg" alt="Tsuklakhang" class="monastery-image">
-            <div class="monastery-info">
-              <h3>TSUKLAKHANG PALACE</h3>
-              <p>Royal chapel with prayer flags and sacred relics</p>
-              <div class="monastery-buttons">
-                <button onclick="openWikipedia('Tsuklakhang_Palace')" class="info-btn">INFO</button>
-                <button onclick="openGoogleMaps(27.334, 88.613)" class="locate-btn">LOCATE</button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+    <!-- Map Section -->
+    <section id="map" class="cyber-section">
+      <div class="section-header"><h2>INTERACTIVE MAP</h2><p>Live navigation and monastery routing</p></div>
+      <div id="mapid"></div>
+      <div class="map-controls">
+        <button class="btn-mapc" onclick="findMe()">📍 My Location</button>
+        <button class="btn-mapc" onclick="showAllMons()">🏯 Show Monasteries</button>
+      </div>
+      <div class="route-info">
+        <h3>🛣️ ROUTE TRACKER</h3>
+        <div><span class="stat-label">Distance:</span> <span class="stat-value" id="route-distance">--</span></div>
+        <div><span class="stat-label">ETA:</span> <span class="stat-value" id="route-eta">--</span></div>
+        <div style="margin-top:1em;">Select any marker on the map for directions</div>
+      </div>
+    </section>
 
-      <!-- FOOD QUEST SECTION -->
-      <section id="food" class="content-section">
-        <div class="section-header">
-          <h2>FOOD QUEST</h2>
-          <p>Embark on a culinary adventure through Sikkim</p>
+    <!-- Contact Us -->
+    <section id="contact" class="cyber-section">
+      <div class="section-header"><h2>Contact Us</h2></div>
+      <div class="neon-grid contact-flex">
+        <div class="contact-card">
+          <div class="contact-emoji">📧</div>
+          <div>Email</div>
+          <a class="email-link" href="mailto:manishsahu00713@gmail.com">manishsahu00713@gmail.com</a>
         </div>
-        
-        <div class="food-grid">
-          <div class="food-card">
-            <div class="food-emoji">🥟</div>
-            <h3>MOMOS</h3>
-            <p>Traditional steamed dumplings filled with vegetables or meat</p>
-            <div class="food-stats">
-              <span class="difficulty">Easy</span>
-              <span class="points">+50 XP</span>
-            </div>
-          </div>
-          
-          <div class="food-card">
-            <div class="food-emoji">🍜</div>
-            <h3>THUKPA</h3>
-            <p>Hearty noodle soup with vegetables and spices</p>
-            <div class="food-stats">
-              <span class="difficulty">Medium</span>
-              <span class="points">+75 XP</span>
-            </div>
-          </div>
-          
-          <div class="food-card">
-            <div class="food-emoji">🥘</div>
-            <h3>PHAGSHAPA</h3>
-            <p>Traditional pork curry with radish and chilies</p>
-            <div class="food-stats">
-              <span class="difficulty">Hard</span>
-              <span class="points">+100 XP</span>
-            </div>
-          </div>
-          
-          <div class="food-card">
-            <div class="food-emoji">🧀</div>
-            <h3>CHHURPI</h3>
-            <p>Hardened yak cheese, traditional Himalayan snack</p>
-            <div class="food-stats">
-              <span class="difficulty">Medium</span>
-              <span class="points">+60 XP</span>
-            </div>
-          </div>
-          
-          <div class="food-card">
-            <div class="food-emoji">🍺</div>
-            <h3>CHANG</h3>
-            <p>Traditional millet beer served in bamboo containers</p>
-            <div class="food-stats">
-              <span class="difficulty">Hard</span>
-              <span class="points">+80 XP</span>
-            </div>
-          </div>
-          
-          <div class="food-card">
-            <div class="food-emoji">🍰</div>
-            <h3>SEL ROTI</h3>
-            <p>Ring-shaped traditional sweet bread</p>
-            <div class="food-stats">
-              <span class="difficulty">Easy</span>
-              <span class="points">+40 XP</span>
-            </div>
-          </div>
-          
-          <div class="food-card">
-            <div class="food-emoji">🥬</div>
-            <h3>GUNDRUK</h3>
-            <p>Fermented leafy green vegetable, probiotic delicacy</p>
-            <div class="food-stats">
-              <span class="difficulty">Medium</span>
-              <span class="points">+70 XP</span>
-            </div>
-          </div>
-          
-          <div class="food-card">
-            <div class="food-emoji">🍲</div>
-            <h3>KINEMA</h3>
-            <p>Fermented soybean curry, rich in protein</p>
-            <div class="food-stats">
-              <span class="difficulty">Hard</span>
-              <span class="points">+90 XP</span>
-            </div>
-          </div>
+        <div class="contact-card">
+          <div class="contact-emoji">💬</div>
+          Feedback<br>
+          <button class="btn-feed">Send Feedback</button>
         </div>
-      </section>
-
-      <!-- ACHIEVEMENT SECTION -->
-      <section id="achievement" class="content-section">
-        <div class="section-header">
-          <h2>ACHIEVEMENT CENTER</h2>
-          <p>Track your progress and unlock rewards</p>
+        <div class="contact-card">
+          <div class="contact-emoji">🔗</div>
+          Connect<br>
+          <button class="btn-feed">GitHub</button>
+          <button class="btn-feed">LinkedIn</button>
         </div>
-        
-        <!-- Taste Achievement Subsection -->
-        <div class="achievement-subsection">
-          <h3>🍽️ TASTE ACHIEVEMENTS</h3>
-          <div class="achievement-grid">
-            <div class="achievement-card">
-              <div class="achievement-icon">🥟</div>
-              <div class="achievement-info">
-                <h4>FAST BITE</h4>
-                <p>Try your first Sikkimese dish</p>
-                <div class="achievement-reward">+100 XP</div>
-              </div>
-              <div class="achievement-status locked">LOCKED</div>
-            </div>
-            
-            <div class="achievement-card">
-              <div class="achievement-icon">🍜</div>
-              <div class="achievement-info">
-                <h4>SOUP MASTER</h4>
-                <p>Try 3 different types of thukpa</p>
-                <div class="achievement-reward">+250 XP</div>
-              </div>
-              <div class="achievement-status locked">LOCKED</div>
-            </div>
-            
-            <div class="achievement-card">
-              <div class="achievement-icon">🧀</div>
-              <div class="achievement-info">
-                <h4>CHEESE CONNOISSEUR</h4>
-                <p>Taste authentic chhurpi</p>
-                <div class="achievement-reward">+150 XP</div>
-              </div>
-              <div class="achievement-status locked">LOCKED</div>
-            </div>
-            
-            <div class="achievement-card">
-              <div class="achievement-icon">🍺</div>
-              <div class="achievement-info">
-                <h4>CHANG CHAMPION</h4>
-                <p>Experience traditional millet beer</p>
-                <div class="achievement-reward">+200 XP</div>
-              </div>
-              <div class="achievement-status locked">LOCKED</div>
-            </div>
-          </div>
-        </div>
-        
-        <!-- Explore Achievement Subsection -->
-        <div class="achievement-subsection">
-          <h3>🏔️ EXPLORE ACHIEVEMENTS</h3>
-          <div class="achievement-grid">
-            <div class="achievement-card">
-              <div class="achievement-icon">🏯</div>
-              <div class="achievement-info">
-                <h4>MONASTERY VISITOR</h4>
-                <p>Visit your first monastery</p>
-                <div class="achievement-reward">+100 XP</div>
-              </div>
-              <div class="achievement-status locked">LOCKED</div>
-            </div>
-            
-            <div class="achievement-card">
-              <div class="achievement-icon">🎭</div>
-              <div class="achievement-info">
-                <h4>CULTURE EXPLORER</h4>
-                <p>Complete culture section</p>
-                <div class="achievement-reward">+300 XP</div>
-              </div>
-              <div class="achievement-status locked">LOCKED</div>
-            </div>
-            
-            <div class="achievement-card">
-              <div class="achievement-icon">🗺️</div>
-              <div class="achievement-info">
-                <h4>NAVIGATOR</h4>
-                <p>Use map feature 5 times</p>
-                <div class="achievement-reward">+150 XP</div>
-              </div>
-              <div class="achievement-status locked">LOCKED</div>
-            </div>
-            
-            <div class="achievement-card">
-              <div class="achievement-icon">👑</div>
-              <div class="achievement-info">
-                <h4>SIKKIM MASTER</h4>
-                <p>Complete all achievements</p>
-                <div class="achievement-reward">+1000 XP</div>
-              </div>
-              <div class="achievement-status locked">LOCKED</div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- MAP SECTION -->
-      <section id="map" class="content-section">
-        <div class="section-header">
-          <h2>INTERACTIVE MAP</h2>
-          <p>Navigate and explore Sikkim with live tracking</p>
-        </div>
-        
-        <div class="map-container">
-          <div id="live-map" class="live-map-element"></div>
-          <div class="map-controls">
-            <button onclick="findMyLocation()" class="control-button">📍 Find My Location</button>
-            <button onclick="showAllMonasteries()" class="control-button">🏯 Show Monasteries</button>
-            <button onclick="centerMap()" class="control-button">🎯 Center Map</button>
-          </div>
-          
-          <div class="route-info">
-            <h3>🛣️ ROUTE TRACKER</h3>
-            <p>Select any monastery to get live directions and route information</p>
-            <div class="route-stats">
-              <div class="stat-item">
-                <span class="stat-label">Distance:</span>
-                <span class="stat-value" id="route-distance">-- km</span>
-              </div>
-              <div class="stat-item">
-                <span class="stat-label">ETA:</span>
-                <span class="stat-value" id="route-eta">-- min</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- CONTACT SECTION -->
-      <section id="contact" class="content-section">
-        <div class="section-header">
-          <h2>CONTACT US</h2>
-          <p>Get in touch with the development team</p>
-        </div>
-        
-        <div class="contact-container">
-          <div class="contact-card">
-            <div class="contact-icon">📧</div>
-            <h3>EMAIL</h3>
-            <p>For support, feedback, or collaboration</p>
-            <div class="contact-info">
-              <a href="mailto:manishsahu00713@gmail.com" class="email-link">
-                manishsahu00713@gmail.com
-              </a>
-            </div>
-          </div>
-          
-          <div class="contact-card">
-            <div class="contact-icon">💬</div>
-            <h3>FEEDBACK</h3>
-            <p>Share your experience and suggestions</p>
-            <button class="feedback-btn">Send Feedback</button>
-          </div>
-          
-          <div class="contact-card">
-            <div class="contact-icon">🔗</div>
-            <h3>SOCIAL</h3>
-            <p>Follow our journey and updates</p>
-            <div class="social-links">
-              <button class="social-btn">GitHub</button>
-              <button class="social-btn">LinkedIn</button>
-            </div>
-          </div>
-        </div>
-      </section>
-
-    </main>
-  </div>
-
-  <!-- Scripts -->
-  <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+      </div>
+    </section>
+  </main>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <script>
-    // Navigation functionality
-    document.querySelectorAll('.nav-item').forEach(item => {
-      item.addEventListener('click', () => {
-        // Remove active class from all nav items and sections
-        document.querySelectorAll('.nav-item').forEach(nav => nav.classList.remove('active'));
-        document.querySelectorAll('.content-section').forEach(section => section.classList.remove('active'));
-        
-        // Add active class to clicked nav item
-        item.classList.add('active');
-        
-        // Show corresponding section
-        const sectionId = item.getAttribute('data-section');
-        document.getElementById(sectionId).classList.add('active');
-        
-        // Initialize map if map section is selected
-        if (sectionId === 'map' && !window.mapInitialized) {
-          initializeMap();
-        }
-      });
+    // NAVIGATION LOGIC
+    document.querySelectorAll('.nav-btn').forEach(btn=>{
+      btn.onclick = function() {
+        document.querySelectorAll('.cyber-section').forEach(s=>s.classList.remove('active'));
+        document.getElementById(btn.dataset.section).classList.add('active');
+        document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
+        btn.classList.add('active');
+        if(btn.dataset.section==="map" && !window.mapinit){ initMap(); }
+      };
     });
 
-    // External link functions
-    function openWikipedia(page) {
-      window.open(`https://en.wikipedia.org/wiki/${page}`, '_blank');
+    // WIKI & MAP
+    function openWiki(page) {
+      window.open('https://en.wikipedia.org/wiki/'+page,'_blank');
+    }
+    function openGM(lat,lng) {
+      window.open('https://www.google.com/maps/dir/?api=1&destination='+lat+','+lng,'_blank');
     }
 
-    function openGoogleMaps(lat, lng) {
-      window.open(`https://www.google.com/maps/dir/?api=1&destination=${lat},${lng}`, '_blank');
-    }
-
-    // Map functionality
-    let map;
-    let userMarker;
-    window.mapInitialized = false;
-
-    const monasteries = [
-      {name: "Rumtek", coords: [27.3158, 88.5465]},
-      {name: "Pemayangtse", coords: [27.2945, 88.2122]},
-      {name: "Ralang", coords: [27.219, 88.366]},
-      {name: "Dubdi", coords: [27.3667, 88.2167]},
-      {name: "Phodong", coords: [27.3668, 88.6014]},
-      {name: "Enchey", coords: [27.3389, 88.6167]},
-      {name: "Tsuklakhang", coords: [27.334, 88.613]}
+    // Leaflet MAP
+    var map, userMarker;
+    var monasteries = [
+      {name:"Rumtek", coords:[27.3158,88.5465]},
+      {name:"Pemayangtse", coords:[27.2945,88.2122]},
+      {name:"Ralang", coords:[27.219,88.366]},
+      {name:"Dubdi", coords:[27.3667,88.2167]},
+      {name:"Phodong", coords:[27.3668,88.6014]},
+      {name:"Enchey", coords:[27.3389,88.6167]},
+      {name:"Tsuklakhang", coords:[27.334,88.613]}
     ];
-
-    function initializeMap() {
-      if (window.mapInitialized) return;
-      
-      map = L.map('live-map-element').setView([27.33, 88.62], 9);
-      
-      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '© OpenStreetMap contributors'
-      }).addTo(map);
-
-      // Add monastery markers
-      monasteries.forEach(monastery => {
-        const marker = L.marker(monastery.coords).addTo(map);
-        marker.bindPopup(`
-          <div style="text-align: center; color: #333;">
-            <h4>${monastery.name}</h4>
-            <button onclick="openGoogleMaps(${monastery.coords[0]}, ${monastery.coords[1]})" 
-                    style="background: #007acc; color: white; border: none; padding: 5px 10px; border-radius: 5px; cursor: pointer;">
-              Get Directions
-            </button>
-          </div>
-        `);
+    window.mapinit = false;
+    function initMap() {
+      if(window.mapinit) return;
+      map = L.map('mapid').setView([27.33,88.62],9);
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{ attribution: '© OpenStreetMap contributors'}).addTo(map);
+      monasteries.forEach(m=>{
+        var mk = L.marker(m.coords).addTo(map);
+        mk.bindPopup(`<b>${m.name}</b><br><button onclick="window.open('<https://www.google.com/maps/dir/?api=1&destination=${m.coords>[0]},${m.coords[1]}','_blank')">Google Route</button>`);
       });
-
-      window.mapInitialized = true;
+      window.mapinit = true;
     }
-
-    function findMyLocation() {
-      if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(function(position) {
-          const userLat = position.coords.latitude;
-          const userLng = position.coords.longitude;
-          
-          if (userMarker) {
-            map.removeLayer(userMarker);
-          }
-          
-          userMarker = L.circleMarker([userLat, userLng], {
-            color: '#00ffff',
-            fillColor: '#00ffff',
-            fillOpacity: 0.8,
-            radius: 12
-          }).addTo(map);
-          
-          userMarker.bindPopup("📍 You are here!");
-          map.setView([userLat, userLng], 12);
+    function showAllMons() {
+      let group = new L.featureGroup(monasteries.map(m => L.marker(m.coords)));
+      map.fitBounds(group.getBounds().pad(0.2));
+    }
+    function findMe() {
+      if(navigator.geolocation){
+        navigator.geolocation.getCurrentPosition(function(pos){
+          let lat = pos.coords.latitude, lng = pos.coords.longitude;
+          if(userMarker) map.removeLayer(userMarker);
+          userMarker = L.circleMarker([lat,lng],{
+            color:'#0ff',fillColor:'#0ff',fillOpacity:0.8,radius:12
+          }).addTo(map).bindPopup("📍 You are here!");
+          map.setView([lat,lng], 12);
         });
       }
-    }
-
-    function showAllMonasteries() {
-      const group = new L.featureGroup(monasteries.map(m => L.marker(m.coords)));
-      map.fitBounds(group.getBounds().pad(0.1));
-    }
-
-    function centerMap() {
-      map.setView([27.33, 88.62], 9);
     }
   </script>
 </body>
