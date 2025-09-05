@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>XYPHER – Sikkim Trails</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- Orbitron for Gamer Font, plus base fonts -->
+  <link href="https://fonts.googleapis.com/css?family=Orbitron:700,900|Montserrat:900,700,400|Dancing+Script:700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="animated-bg"></div>
+  <div class="xp-header">
+    <span class="xp-brand neon-font">XYPHER</span>
+    <input class="xp-search" placeholder="Search..."/>
+  </div>
+  <nav class="xp-nav">
+    <button class="xp-navitem" onclick="showSection('monasteries')">Monasteries</button>
+    <button class="xp-navitem" onclick="showSection('taste-achieve')">Taste Achievements</button>
+    <button class="xp-navitem" onclick="showSection('culture')">Culture</button>
+    <button class="xp-navitem" onclick="showSection('comingsoon')">Food Map</button>
+  </nav>
+  <main>
+    <!-- Neon welcome -->
+    <section id="xp-welcome" class="xp-section active">
+      <div class="xp-glow-panel">
+        <div class="xp-sys-online">⦗ SYSTEM ONLINE ⦘</div>
+        <h1 class="xp-mainhead neon-font">WELCOME TO XYPHER</h1>
+        <div class="xp-init">[INITIATING SPIRITUAL QUEST PROTOCOL]</div>
+        <div class="xp-desc">
+          Embark on a <span class="cyber-xp">gamified journey</span> through sacred monasteries.
+          <span class="cyber-xp">Earn XP, unlock achievements</span>, and discover the digital heart of the Himalayas.
+        </div>
+      </div>
+    </section>
+    <!-- Monasteries -->
+    <section id="monasteries" class="xp-section">
+      <h2 class="cypher-header">✦ MONASTERIES QUEST ✦</h2>
+      <div class="cypher-grid">
+        <div class="cypher-card">
+          <img src="1000020084.jpg" alt="Rumtek" class="cypher-card-img">
+          <div class="cypher-card-title">Rumtek</div>
+          <div class="cypher-card-desc">Home of the Karmapa, golden roofs, rituals.</div>
+          <div class="cypher-card-actions">
+            <button onclick="window.open('https://en.wikipedia.org/wiki/Rumtek_Monastery','_blank')">Info</button>
+            <button onclick="window.open('https://www.google.com/maps/dir/?api=1&destination=27.3158,88.5465','_blank')">Locate</button>
+          </div>
+        </div>
+        <div class="cypher-card">
+          <img src="1000020087.jpg" alt="Pemayangtse" class="cypher-card-img">
+          <div class="cypher-card-title">Pemayangtse</div>
+          <div class="cypher-card-desc">Nyingma treasure, Zangdok Palri sculpture, relics.</div>
+          <div class="cypher-card-actions">
+            <button onclick="window.open('https://en.wikipedia.org/wiki/Pemayangtse_Monastery','_blank')">Info</button>
+            <button onclick="window.open('https://www.google.com/maps/dir/?api=1&destination=27.2945,88.2122','_blank')">Locate</button>
+          </div>
+        </div>
+        <div class="cypher-card">
+          <img src="1000020090.jpg" alt="Ralang" class="cypher-card-img">
+          <div class="cypher-card-title">Ralang</div>
+          <div class="cypher-card-desc">Cham dances, murals, festivals.</div>
+          <div class="cypher-card-actions">
+            <button onclick="window.open('https://en.wikipedia.org/wiki/Ralang_Monastery','_blank')">Info</button>
+            <button onclick="window.open('https://www.google.com/maps/dir/?api=1&destination=27.219,88.366','_blank')">Locate</button>
+          </div>
+        </div>
+        <div class="cypher-card">
+          <img src="1000020093.jpg" alt="Dubdi" class="cypher-card-img">
+          <div class="cypher-card-title">Dubdi</div>
+          <div class="cypher-card-desc">Oldest Sikkim monastery, forest retreat.</div>
+          <div class="cypher-card-actions">
+            <button onclick="window.open('https://en.wikipedia.org/wiki/Dubdi_Monastery','_blank')">Info</button>
+            <button onclick="window.open('https://www.google.com/maps/dir/?api=1&destination=27.3667,88.2167','_blank')">Locate</button>
+          </div>
+        </div>
+        <div class="cypher-card">
+          <img src="1000020092.jpg" alt="Phodong" class="cypher-card-img">
+          <div class="cypher-card-title">Phodong</div>
+          <div class="cypher-card-desc">Kagyu lineage, murals, Cham dances.</div>
+          <div class="cypher-card-actions">
+            <button onclick="window.open('https://en.wikipedia.org/wiki/Phodong_Monastery','_blank')">Info</button>
+            <button onclick="window.open('https://www.google.com/maps/dir/?api=1&destination=27.3668,88.6014','_blank')">Locate</button>
+          </div>
+        </div>
+        <div class="cypher-card">
+          <img src="1000020094.jpg" alt="Enchey" class="cypher-card-img">
+          <div class="cypher-card-title">Enchey</div>
+          <div class="cypher-card-desc">Guardian of Gangtok, chaam festival.</div>
+          <div class="cypher-card-actions">
+            <button onclick="window.open('https://en.wikipedia.org/wiki/Enchey_Monastery','_blank')">Info</button>
+            <button onclick="window.open('https://www.google.com/maps/dir/?api=1&destination=27.3389,88.6167','_blank')">Locate</button>
+          </div>
+        </div>
+        <div class="cypher-card">
+          <img src="1000020081.jpg" alt="Tsuklakhang" class="cypher-card-img">
+          <div class="cypher-card-title">Tsuklakhang</div>
+          <div class="cypher-card-desc">Royal chapel, prayer flags, relics.</div>
+          <div class="cypher-card-actions">
+            <button onclick="window.open('https://en.wikipedia.org/wiki/Tsuklakhang_Palace','_blank')">Info</button>
+            <button onclick="window.open('https://www.google.com/maps/dir/?api=1&destination=27.334,88.613','_blank')">Locate</button>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- Taste Achievements (Food) -->
+    <section id="taste-achieve" class="xp-section">
+      <h2 class="cypher-header">✦ TASTE ACHIEVEMENTS ✦</h2>
+      <div class="cypher-grid">
+        <div class="cypher-food-card">
+          <div class="cypher-food-icon">🍜</div>
+          <div class="cypher-food-title">FAST BITE</div>
+          <div class="cypher-food-desc">Try your first Sikkimese dish</div>
+          <div class="cypher-food-xp">+100 XP</div>
+        </div>
+        <div class="cypher-food-card">
+          <div class="cypher-food-icon">🥟</div>
+          <div class="cypher-food-title">MOMO MONSTER</div>
+          <div class="cypher-food-desc">Try 5 types of momos</div>
+          <div class="cypher-food-xp">+250 XP</div>
+        </div>
+        <div class="cypher-food-card">
+          <div class="cypher-food-icon">🥘</div>
+          <div class="cypher-food-title">CHHURPI COLLECTOR</div>
+          <div class="cypher-food-desc">Eat a local cheese dish</div>
+          <div class="cypher-food-xp">+120 XP</div>
+        </div>
+        <div class="cypher-food-card">
+          <div class="cypher-food-icon">🍚</div>
+          <div class="cypher-food-title">THUKPA TASTER</div>
+          <div class="cypher-food-desc">Slurp a bowl of thukpa</div>
+          <div class="cypher-food-xp">+100 XP</div>
+        </div>
+        <div class="cypher-food-card">
+          <div class="cypher-food-icon">🍺</div>
+          <div class="cypher-food-title">CHANG CHAMP</div>
+          <div class="cypher-food-desc">Try millet beer (Chang)</div>
+          <div class="cypher-food-xp">+200 XP</div>
+        </div>
+      </div>
+    </section>
+    <!-- Culture Section (short example) -->
+    <section id="culture" class="xp-section">
+      <h2 class="cypher-header">✦ CULTURE ✦</h2>
+      <div class="xp-panel">
+        <div><span style="color:#0fffc3">Ethnic Groups:</span> Lepcha, Bhutia, Nepali, Tibetan</div>
+        <div><span style="color:#0fffc3">Traditions:</span> Mask dances, New Year rituals, sacred lakes</div>
+        <div><span style="color:#0fffc3">Dress:</span> Dumdyam, Bakhu, Pangden</div>
+      </div>
+    </section>
+    <!-- Coming soon (Map, etc) -->
+    <section id="comingsoon" class="xp-section">
+      <h2 class="cypher-header">✦ COMING SOON ✦</h2>
+      <div class="cypher-grid">
+        <div class="cypher-food-card" style="width:100%">
+          <div style="color:#3ff;font-size:1.3em;margin-bottom:12px;background:#042222;padding:15px;border-radius:19px;text-shadow:0 0 30px #00faff">
+            Navigate through Sikkim's food landscape with our interactive vendor map.<br><br>
+            <button class="cta" style="font-size:1.06em;margin:0;display:inline-block;border:2px solid #00ffbe;background:#011313;color:#0fffc3;">ENABLE LOCATION SERVICES</button>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- Sidebar/quick access -->
+    <footer>
+      <section class="xp-footer">
+        <div>✦ XYPHER NEURAL NET ✦<br/>
+          <span class="xp-footer-desc">Advanced gateway for spiritual/cultural heritage exploration via gamification protocols.</span>
+        </div>
+        <div class="xp-quicklinks">
+          <b>Quick Access:</b>
+          <ul>
+            <li><a href="#" onclick="showSection('monasteries')">Monastery Grid</a></li>
+            <li><a href="#" onclick="showSection('culture')">Culture DB</a></li>
+            <li><a href="#" onclick="showSection('taste-achieve')">Food Quest</a></li>
+          </ul>
+        </div>
+        <div class="xp-footer-desc">© 2024 XYPHER Neural Network. All systems operational.</div>
+      </section>
+    </footer>
+  </main>
+  <script>
+    function showSection(id) {
+      document.querySelectorAll('.xp-section').forEach(s=>s.classList.remove('active'));
+      document.getElementById(id).classList.add('active');
+    }
+    // Default: show welcome, then auto switch to monasteries after 2.7s for demo
+    setTimeout(()=>{showSection('monasteries')},2700);
+  </script>
+</body>
+</html>
